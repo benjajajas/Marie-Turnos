@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#ffffff"><link rel="manifest" href="manifest.json"><link rel="icon" href="icon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="icon-192.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Marie"><title>Marie · Depilación y Pedicuría</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fff;--soft:#fdf3f8;--line:#f6d3e0;--pink:#d6457f;--pink2:#ec7fab;--ink:#4a2234;--mute:#9a6f82;color-scheme:light;box-sizing:border-box}
+html,body{background:#fff}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Nunito,system-ui,sans-serif;line-height:1.45}
+button{font-family:inherit}
+:focus-visible{outline:3px solid var(--pink2);outline-offset:2px}
+
+/* splash */
+#splash{position:fixed;inset:0;z-index:50;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 24px calc(48px + env(safe-area-inset-bottom,0px));text-align:center;transition:transform .7s cubic-bezier(.7,0,.2,1),opacity .7s}
+#splash.out{transform:translateX(105%);opacity:0}
+#splash .logoBig{animation:float 3.6s ease-in-out infinite}
+#splash.go .logoBig{animation:none;transform:scale(1.25) rotate(8deg);transition:transform .5s}
+@keyframes float{50%{transform:translateY(-10px)}}
+#splash h1{font:700 64px 'Playfair Display',Georgia,serif;color:var(--pink);margin:6px 0 0;letter-spacing:1px}
+#splash p{color:var(--mute);margin:4px 0 0;font-weight:600}
+.petal{position:absolute;border-radius:60% 40% 60% 40%;background:var(--soft);animation:drift 9s ease-in-out infinite}
+@keyframes drift{50%{transform:translateY(-22px) rotate(25deg)}}
+.slide{position:absolute;left:24px;right:24px;bottom:calc(44px + env(safe-area-inset-bottom,0px));height:64px;border-radius:99px;background:var(--soft);border:1px solid var(--line);overflow:hidden;touch-action:none;user-select:none}
+.fill{position:absolute;left:0;top:0;bottom:0;width:64px;background:linear-gradient(90deg,var(--pink2),var(--pink));border-radius:99px}
+.hint{position:absolute;inset:0;display:grid;place-items:center;padding-left:48px;font-weight:800;color:var(--pink);letter-spacing:.2px;background:linear-gradient(100deg,var(--pink) 30%,#fff 50%,var(--pink) 70%);background-size:220% 100%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:shine 2.4s linear infinite}
+@keyframes shine{from{background-position:120% 0}to{background-position:-120% 0}}
+.knob{position:absolute;left:4px;top:4px;width:56px;height:56px;border-radius:50%;background:#fff;color:var(--pink);display:grid;place-items:center;border:0;box-shadow:0 3px 10px rgba(214,69,127,.35);cursor:grab;animation:nudge 1.8s ease-in-out infinite}
+.knob.drag{animation:none;cursor:grabbing}
+@keyframes nudge{50%{transform:translateX(8px)}}
+
+/* top */
+header.top{background:var(--bg);color:var(--pink);padding:calc(10px + env(safe-area-inset-top,0px)) 16px 14px;border-bottom:1px solid var(--line)}
+.row0{display:flex;align-items:center;justify-content:space-between;max-width:520px;margin:0 auto}
+.brand{display:flex;align-items:center;gap:10px;font:700 22px 'Playfair Display',Georgia,serif}
+.ico{background:var(--soft);border:0;color:var(--pink);width:44px;height:44px;border-radius:14px;cursor:pointer;display:grid;place-items:center}
+.greet{max-width:520px;margin:14px auto 0;font-size:15px;color:var(--mute)}
+.greet b{display:block;font:700 26px 'Playfair Display',Georgia,serif;margin-top:2px;color:var(--pink)}
+.wrap{max-width:520px;margin:0 auto;padding:0 18px 160px}
+h2{font:700 22px 'Playfair Display',Georgia,serif;margin:24px 0 10px}
+
+/* options */
+.opt{display:flex;align-items:center;gap:14px;width:100%;text-align:left;background:var(--bg);border:1px solid var(--line);border-radius:20px;padding:16px;margin-top:12px;color:var(--ink);cursor:pointer;box-shadow:0 6px 18px rgba(214,69,127,.10)}
+.opt:active{background:var(--soft)}
+.oi{width:56px;height:56px;border-radius:18px;background:linear-gradient(135deg,var(--pink2),var(--pink));color:#fff;display:grid;place-items:center;flex:none}
+.ot{flex:1}.ot b{display:block;font-size:18px;color:var(--pink)}.ot small{color:var(--mute);font-size:13px}
+.chev{color:var(--pink2)}
+.card{background:var(--bg);border:1px solid var(--line);border-radius:18px;padding:14px 16px;margin-top:12px;font-size:14px}
+.card b{color:var(--pink)}
+.wa{display:flex;align-items:center;justify-content:space-between;text-decoration:none;color:var(--pink);font-weight:800;margin-top:12px;border:1px solid var(--line);border-radius:18px;padding:14px 16px}
+body.ready .opt,body.ready .card{animation:rise .55s both}
+body.ready .opt:nth-of-type(2){animation-delay:.08s}body.ready .opt:nth-of-type(3){animation-delay:.16s}
+@keyframes rise{from{opacity:0;transform:translateX(-26px)}}
+
+/* booking */
+.back{display:flex;align-items:center;gap:6px;background:none;border:0;color:var(--pink);font:800 16px Nunito,sans-serif;padding:16px 0 0;cursor:pointer}
+.tabs{display:flex;gap:8px;overflow-x:auto;padding:4px 0}
+.tab{border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:99px;padding:8px 16px;font:700 14px Nunito,sans-serif;white-space:nowrap;cursor:pointer}
+.tab[aria-pressed="true"]{background:var(--pink);border-color:var(--pink);color:#fff}
+.svc{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:var(--bg);border:1px solid var(--line);border-radius:16px;padding:13px 14px;margin-top:9px;color:var(--ink);font:inherit;cursor:pointer}
+.svc .n{flex:1}.svc small{display:block;color:var(--mute);font-size:12px}.svc b{color:var(--pink)}
+.chk{width:24px;height:24px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;color:transparent;font-size:14px}
+.svc[aria-pressed="true"]{background:var(--soft);border-color:var(--pink)}
+.svc[aria-pressed="true"] .chk{background:var(--pink);border-color:var(--pink);color:#fff}
+.note{font-size:13px;color:var(--mute);margin-top:10px}
+.days{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px}
+.day{flex:0 0 auto;min-width:62px;text-align:center;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:16px;padding:8px 6px;font:inherit;cursor:pointer}
+.day small{display:block;color:var(--mute);font-size:12px}.day b{font-size:18px}
+.day[aria-pressed="true"]{background:var(--pink);border-color:var(--pink);color:#fff}.day[aria-pressed="true"] small{color:#fff}
+.hours{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}
+.hr{border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:12px;padding:9px 0;font:700 14px Nunito,sans-serif;cursor:pointer}
+.hr[aria-pressed="true"]{background:var(--pink);border-color:var(--pink);color:#fff}
+input{width:100%;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:14px;padding:13px;font:16px Nunito,sans-serif}
+.sum{background:var(--bg);border:1px solid var(--line);border-radius:16px;padding:12px 14px;font-size:14px;margin-top:12px}
+.bar{position:fixed;left:0;right:0;bottom:calc(60px + env(safe-area-inset-bottom,0px));background:var(--bg);border-top:1px solid var(--line);padding:10px 18px}
+.bar>div{max-width:520px;margin:0 auto;display:flex;align-items:center;gap:12px}
+.tot{flex:1;font-size:13px;color:var(--mute)}.tot b{display:block;font-size:20px;color:var(--ink)}
+.go{background:var(--pink);color:#fff;border:0;border-radius:99px;padding:14px 22px;font:800 16px Nunito,sans-serif;cursor:pointer}
+.go:disabled{opacity:.4;cursor:default}
+.bar .go{white-space:nowrap}
+
+/* orders */
+.ord{border:1px solid var(--line);border-radius:18px;padding:14px;margin-top:10px}
+.st{display:inline-block;background:var(--soft);color:var(--pink);border-radius:99px;padding:3px 10px;font-size:12px;font-weight:800}
+.ord .r{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:8px}
+.lnk{background:none;border:0;color:var(--pink);font:800 14px Nunito,sans-serif;cursor:pointer;padding:6px 0;text-decoration:none}
+.empty{text-align:center;color:var(--mute);padding:40px 10px}
+
+/* nav, menu, sheet */
+nav.nav{position:fixed;left:0;right:0;bottom:0;background:var(--bg);border-top:1px solid var(--line);display:flex;padding-bottom:env(safe-area-inset-bottom,0px);z-index:5}
+nav.nav button{flex:1;border:0;background:none;color:var(--mute);padding:8px 0 9px;font:700 12px Nunito,sans-serif;cursor:pointer;display:grid;justify-items:center;gap:2px}
+nav.nav button[aria-pressed="true"]{color:var(--pink)}
+.scrim{position:fixed;inset:0;background:rgba(60,20,40,.35);z-index:20;display:none}.scrim.on{display:block}
+.menu{position:fixed;top:0;right:0;width:min(300px,85%);height:100%;background:var(--bg);z-index:21;padding:calc(16px + env(safe-area-inset-top,0px)) 14px 20px;transform:translateX(100%);transition:transform .25s}
+.menu.on{transform:none}
+.menu .hd{display:flex;align-items:center;gap:12px;padding:6px 6px 16px;border-bottom:1px solid var(--line);margin-bottom:8px}
+.menu .hd small{color:var(--mute);display:block}
+.mi{display:flex;align-items:center;gap:12px;width:100%;border:0;background:none;color:var(--ink);font:700 16px Nunito,sans-serif;padding:14px 8px;border-radius:12px;text-align:left;cursor:pointer}
+.mi:active{background:var(--soft)}.mi svg{color:var(--pink)}
+.sheet{position:fixed;left:0;right:0;bottom:0;max-width:520px;margin:0 auto;background:var(--bg);z-index:22;border-radius:24px 24px 0 0;padding:20px 20px calc(24px + env(safe-area-inset-bottom,0px));transform:translateY(105%);transition:transform .25s}
+.sheet.on{transform:none}
+.sheet h3{font:700 22px 'Playfair Display',Georgia,serif;margin:0 0 10px;color:var(--pink)}
+.sheet p{margin:6px 0}
+.sheet .go{display:block;text-align:center;text-decoration:none;margin-top:14px}
+.toast{position:fixed;left:50%;bottom:calc(150px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:99px;font-size:14px;z-index:30;display:none;white-space:nowrap}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition-duration:.01s!important}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><symbol id="lg" viewBox="0 0 100 100"><defs><linearGradient id="gg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f59bbd"/><stop offset="1" stop-color="#d6457f"/></linearGradient></defs><circle cx="50" cy="50" r="48" fill="url(#gg)"/><circle cx="50" cy="50" r="42" fill="none" stroke="#fff" stroke-opacity=".6" stroke-width="1.5"/><path d="M24 74c-6-12-4-26 4-36M76 74c6-12 4-26-4-36" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/><text x="50" y="66" text-anchor="middle" font-family="'Playfair Display',Georgia,serif" font-size="52" font-weight="700" fill="#fff">M</text><path d="M50 22c4 6 4 10 0 14-4-4-4-8 0-14z" fill="#fff"/></symbol></defs></svg>
+
+<div id="splash">
+  <span class="petal" style="width:90px;height:90px;left:-20px;top:12%"></span>
+  <span class="petal" style="width:60px;height:60px;right:8%;top:20%;animation-delay:-3s"></span>
+  <span class="petal" style="width:110px;height:110px;right:-30px;top:52%;animation-delay:-5s"></span>
+  <svg class="logoBig" width="150" height="150" viewBox="0 0 100 100" role="img" aria-label="Logo de Marie"><use href="#lg"/></svg>
+  <h1>Marie</h1>
+  <p>Depilación descartable y pedicuría</p>
+  <div class="slide" id="slide"><div class="fill" id="fill"></div><div class="hint" id="hint">Deslizá para empezar</div>
+    <button class="knob" id="knob" aria-label="Deslizá a la derecha para empezar"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div>
+</div>
+
+<header class="top">
+  <div class="row0"><div class="brand"><svg width="34" height="34" viewBox="0 0 100 100" aria-hidden="true"><use href="#lg"/></svg>Marie</div>
+  <button class="ico" id="menuBtn" aria-label="Abrir menú"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button></div>
+  <div class="greet">Bienvenida<b>¿Qué querés hacerte hoy?</b></div>
+</header>
+
+<main class="wrap" id="home">
+  <button class="opt" data-c="Depilación descartable"><span class="oi"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19l9-9M14 10l3-6 3 3-6 3zM5 19l-1 2 2-1"/></svg></span><span class="ot"><b>Depilación descartable</b><small>Con cera, 100% descartable</small></span><svg class="chev" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M9 5l7 7-7 7"/></svg></button>
+  <button class="opt" data-c="Pedicuría"><span class="oi"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3c3 0 4 3 3.5 6S14 14 14 17c0 3-2 4-4 4s-3-2-3-4c0-4 1-5 1-8S7 3 9 3z"/><circle cx="16.5" cy="5" r="1"/><circle cx="19" cy="8" r="1"/><circle cx="20" cy="11.5" r="1"/></svg></span><span class="ot"><b>Pedicuría</b><small>Con esmaltado y manicuría</small></span><svg class="chev" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M9 5l7 7-7 7"/></svg></button>
+  <button class="opt" data-c="Promos"><span class="oi"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M5 12v8h14v-8M12 8v12M12 8c-2-4-6-3-5 0M12 8c2-4 6-3 5 0"/></svg></span><span class="ot"><b>Promos</b><small>Pago en efectivo</small></span><svg class="chev" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M9 5l7 7-7 7"/></svg></button>
+  <div class="card"><b>Horarios</b><br>Lunes a viernes de 7 a 20 hs<br>Sábados, domingos y feriados de 8 a 12 hs<br><b>Con turno previo</b></div>
+  <a class="wa" href="https://api.whatsapp.com/send?phone=5491163243549" target="_blank" rel="noopener"><span>WhatsApp (11) 6324-3549</span><span>Escribir</span></a>
+</main>
+
+<main class="wrap" id="book" hidden>
+  <button class="back" id="back"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M15 5l-7 7 7 7"/></svg>Inicio</button>
+  <div id="s1"><h2 id="s1t"></h2><p class="note" style="margin-top:-4px">¿Qué querés hacerte? Elegí uno o más servicios.</p>
+  <div id="list"></div>
+  <p class="note" id="promoNote" hidden>Las promos se abonan en efectivo.</p></div>
+  <div id="s2" hidden><h2>Elegí el día</h2><div class="days" id="days"></div>
+  <h2>Elegí el horario</h2><div class="hours" id="hours"></div></div>
+  <div id="s3" hidden><h2>Confirmá tu turno</h2><div class="sum" id="sum"></div>
+  <p class="note">El turno queda confirmado cuando Marie te responda por WhatsApp.</p>
+  <h2>Tu nombre</h2>
+  <input id="name" placeholder="Nombre y apellido" autocomplete="name">
+  </div>
+</main>
+<div class="bar" id="bar" style="display:none"><div><div class="tot">Total<b id="total">$0</b></div><button class="go" id="send" disabled>Continuar</button></div></div>
+
+<section class="wrap" id="orders" hidden><h2>Mis pedidos</h2><div id="ordList"></div></section>
+
+<nav class="nav"><button id="nHome" aria-pressed="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8M5 10v10h14V10"/></svg>Inicio</button><button id="nOrd" aria-pressed="false"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="3"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>Mis pedidos</button></nav>
+<div class="scrim" id="scrim"></div>
+<aside class="menu" id="menu" aria-label="Menú">
+  <div class="hd"><svg width="44" height="44" viewBox="0 0 100 100"><use href="#lg"/></svg><div><b>Marie</b><small>Depilación y pedicuría</small></div></div>
+  <button class="mi" id="miAcc"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-5 15-5 16 0"/></svg>Mi cuenta de Marie</button>
+  <button class="mi" id="miHelp"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 115 0c0 1.8-2.5 2-2.5 4M12 17h.01"/></svg>Centro de ayuda</button>
+  <button class="mi" id="miOut"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 4h4v16h-4M10 8l-4 4 4 4M6 12h10"/></svg>Cerrar sesión</button>
+</aside>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true"></div>
+<div class="toast" id="toast"></div>
+
+<script>
+var $=function(i){return document.getElementById(i)};
+var money=function(n){return "$"+n.toLocaleString("es-AR")};
+var WA="https://api.whatsapp.com/send?phone=5491163243549";
+var CATS={
+"Depilación descartable":[["Bozo",5000],["Mentón",5000],["Rostro completo",16000],["Cejas",9000],["Patillas",4000],["Axilas",9000],["Pies",5000],["Manos",5000],["Escote",7000],["Pecho",12000],["Brazos completos",15000],["Medios brazos",10000],["Espalda completa",15000],["Cintura",8000],["Abdomen",10000],["Medias piernas",12000],["Piernas completas",20000],["Tira de cola",10000],["Pelvis",17000],["Cavado",15000]],
+"Pedicuría":[["Pedicuría con esmaltado",25000],["Manicuría",10000]],
+"Promos":[["Manicuría",10000],["Pedicuría con esmaltado",25000],["Depi completa","pierna entera + pelvis + tira de cola + axilas + bozo + cejas",42000],["Pelvis + tira de cola",24000],["Rostro","bozo + cejas",12000],["Depi media","media pierna + cavado + axilas + bozo + cejas",32000]]
+};
+var cat="Depilación descartable",sel={},day=null,hr=null,mem=[],curStep=1;
+function step(n){curStep=n;[1,2,3].forEach(function(i){$("s"+i).hidden=i!=n});$("s1t").textContent=cat;$("send").textContent=n==3?"Enviar por WhatsApp":"Continuar";$("back").lastChild.textContent=n==1?"Inicio":"Atrás";upd();window.scrollTo(0,0)}
+function item(a){return a.length==2?{n:a[0],d:"",p:a[1]}:{n:a[0],d:a[1],p:a[2]}}
+
+/* splash slide */
+(function(){var s=$("slide"),k=$("knob"),f=$("fill"),h=$("hint"),sp=$("splash"),x0=0,max=0,dr=false,done=false;
+function set(x){k.style.transform="translateX("+x+"px)";f.style.width=(x+60)+"px";h.style.opacity=Math.max(0,1-x/(max*.6))}
+function finish(){if(done)return;done=true;k.style.transition=f.style.transition="all .25s";max=s.clientWidth-64;set(max);sp.classList.add("go");
+setTimeout(function(){sp.classList.add("out");document.body.classList.add("ready")},250);setTimeout(function(){sp.style.display="none"},1000)}
+k.addEventListener("pointerdown",function(e){if(done)return;dr=true;max=s.clientWidth-64;x0=e.clientX;k.classList.add("drag");k.style.transition=f.style.transition="none";k.setPointerCapture(e.pointerId)});
+k.addEventListener("pointermove",function(e){if(!dr)return;set(Math.max(0,Math.min(max,e.clientX-x0)))});
+function up(e){if(!dr)return;dr=false;k.classList.remove("drag");var x=Math.max(0,Math.min(max,e.clientX-x0));
+if(x>max*.7)finish();else{k.style.transition=f.style.transition="all .3s";set(0)}}
+k.addEventListener("pointerup",up);k.addEventListener("pointercancel",up);
+k.addEventListener("keydown",function(e){if(e.key=="Enter"||e.key==" "||e.key=="ArrowRight"){e.preventDefault();finish()}})})();
+
+/* views */
+function view(v){var b=v=="book";$("home").hidden=v!="home";$("book").hidden=!b;$("orders").hidden=v!="orders";$("bar").style.display=b?"":"none";
+$("nHome").setAttribute("aria-pressed",v!="orders");$("nOrd").setAttribute("aria-pressed",v=="orders");closeAll();window.scrollTo(0,0)}
+[].forEach.call(document.querySelectorAll(".opt"),function(o){o.onclick=function(){cat=o.getAttribute("data-c");sel={};day=null;hr=null;drawList();drawDays();drawHours();step(1);view("book")}});
+$("back").onclick=function(){if(curStep>1)step(curStep-1);else view("home")};$("nHome").onclick=function(){view("home")};$("nOrd").onclick=function(){view("orders")};
+
+/* services */
+function drawTabs(){$("tabs").innerHTML="";Object.keys(CATS).forEach(function(c){var b=document.createElement("button");b.className="tab";b.textContent=c;b.setAttribute("aria-pressed",c==cat);b.onclick=function(){cat=c;drawTabs();drawList()};$("tabs").appendChild(b)})}
+function drawList(){var L=$("list");L.innerHTML="";$("promoNote").hidden=cat!="Promos";
+CATS[cat].forEach(function(a){var s=item(a),k=cat=="Promos"?"p:"+s.n:s.n,b=document.createElement("button");b.className="svc";b.setAttribute("aria-pressed",!!sel[k]);
+b.innerHTML='<span class="chk">✓</span><span class="n">'+s.n+(s.d?'<small>'+s.d+'</small>':'')+'</span><b>'+money(s.p)+'</b>';
+b.onclick=function(){if(sel[k])delete sel[k];else sel[k]=s;b.setAttribute("aria-pressed",!!sel[k]);upd()};L.appendChild(b)})}
+var DN=["Dom","Lun","Mar","Mié","Jue","Vie","Sáb"],MN=["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+function drawDays(){var D=$("days"),t=new Date();D.innerHTML="";for(var i=0;i<14;i++){var d=new Date(t.getFullYear(),t.getMonth(),t.getDate()+i);(function(d){var b=document.createElement("button");b.className="day";b.setAttribute("aria-pressed","false");
+b.innerHTML="<small>"+DN[d.getDay()]+"</small><b>"+d.getDate()+"</b><small>"+MN[d.getMonth()]+"</small>";
+b.onclick=function(){day=d;hr=null;[].forEach.call(D.children,function(x){x.setAttribute("aria-pressed","false")});b.setAttribute("aria-pressed","true");drawHours();upd()};D.appendChild(b)})(d)}}
+function drawHours(){var H=$("hours");H.innerHTML="";if(!day){H.innerHTML='<p class="note" style="grid-column:1/-1">Elegí un día primero.</p>';return}
+var w=day.getDay(),we=(w==0||w==6),a=we?8:7,z=we?11:19;
+for(var h=a;h<=z;h++){(function(h){var b=document.createElement("button");b.className="hr";b.setAttribute("aria-pressed","false");b.textContent=h+":00";
+b.onclick=function(){hr=h;[].forEach.call(H.children,function(x){x.setAttribute("aria-pressed","false")});b.setAttribute("aria-pressed","true");upd()};H.appendChild(b)})(h)}
+if(we)H.insertAdjacentHTML("beforeend",'<p class="note" style="grid-column:1/-1">Si es feriado, el horario es de 8 a 12 hs.</p>')}
+function upd(){var k=Object.keys(sel),tot=0;k.forEach(function(x){tot+=sel[x].p});$("total").textContent=money(tot);
+$("sum").textContent=k.length?k.map(function(x){return sel[x].n}).join(", ")+(day&&hr!==null?" · "+DN[day.getDay()]+" "+day.getDate()+" de "+MN[day.getMonth()]+", "+hr+":00 hs":""):"Todavía no elegiste servicios.";
+$("send").disabled=curStep==1?!k.length:curStep==2?!(day&&hr!==null):false}
+$("send").onclick=function(){if(curStep<3){step(curStep+1);return}var k=Object.keys(sel),tot=0,n=$("name").value.trim(),names=k.map(function(x){return sel[x].n});k.forEach(function(x){tot+=sel[x].p});
+var when=DN[day.getDay()]+" "+day.getDate()+" de "+MN[day.getMonth()]+", "+hr+":00 hs";
+var m="Hola Marie, soy "+(n||"una clienta")+". Quiero pedir turno para: "+names.join(", ")+". Día: "+when+". Total: "+money(tot)+". ¿Me confirmás el turno?";
+var enc=encodeURIComponent(m);saveOrder(names,when,tot);sel={};day=null;hr=null;$("name").value="";view("home");
+try{window.open(WA+"&text="+enc,"_blank")}catch(e){}
+openSheet('<h3>Tu mensaje está listo</h3><p id="msgp" style="background:#fdf3f8;border-radius:14px;padding:12px;font-size:14px"></p><a class="go" href="whatsapp://send?phone=5491163243549&text='+enc+'" target="_blank" rel="noopener">Abrir WhatsApp</a><a class="go" style="background:#fff;color:#d6457f;border:1px solid #f6d3e0" href="'+WA+'&text='+enc+'" target="_blank" rel="noopener">Abrir WhatsApp Web</a><button class="go" style="width:100%;background:#fff;color:#d6457f;border:1px solid #f6d3e0;margin-top:10px" id="cp">Copiar mensaje</button><p class="note">Si no se abre, copiá el mensaje y pegalo en el WhatsApp de Marie: (11) 6324-3549.</p>');
+$("msgp").textContent=m;
+$("cp").onclick=function(){var ok=false;try{navigator.clipboard.writeText(m).then(function(){toast("Mensaje copiado")},function(){});ok=true}catch(e){}if(!ok){var t=document.createElement("textarea");t.value=m;document.body.appendChild(t);t.select();try{document.execCommand("copy");toast("Mensaje copiado")}catch(e){}t.remove()}}};
+
+/* orders */
+try{mem=JSON.parse(localStorage.getItem("marie_orders")||"[]")}catch(e){mem=[]}
+function store(){try{localStorage.setItem("marie_orders",JSON.stringify(mem))}catch(e){}}
+function saveOrder(s,w,t){mem.unshift({s:s,w:w,t:t,id:Date.now()});store();drawOrders();toast("Pedido guardado en Mis pedidos")}
+function toast(t){var e=$("toast");e.textContent=t;e.style.display="block";setTimeout(function(){e.style.display="none"},2600)}
+function drawOrders(){var L=$("ordList");if(!mem.length){L.innerHTML='<div class="empty">Todavía no pediste ningún turno.<br><button class="go" style="margin-top:16px" id="goBook">Pedir un turno</button></div>';$("goBook").onclick=function(){view("home")};return}
+L.innerHTML="";mem.forEach(function(o){var d=document.createElement("div");d.className="ord";d.innerHTML='<span class="st">Esperando confirmación</span><p style="margin:8px 0 2px"><b>'+o.s.join(", ")+'</b></p><small style="color:var(--mute)">'+o.w+'</small><div class="r"><b>'+money(o.t)+'</b><span><a class="lnk" href="'+WA+'" target="_blank" rel="noopener">Escribir a Marie</a> <button class="lnk">Cancelar</button></span></div>';
+d.querySelector("button").onclick=function(){mem=mem.filter(function(x){return x.id!=o.id});store();drawOrders()};L.appendChild(d)})}
+
+/* menu */
+function closeAll(){$("menu").classList.remove("on");$("sheet").classList.remove("on");$("scrim").classList.remove("on")}
+function openSheet(h){$("menu").classList.remove("on");$("sheet").innerHTML=h;$("sheet").classList.add("on");$("scrim").classList.add("on")}
+$("menuBtn").onclick=function(){$("menu").classList.add("on");$("scrim").classList.add("on")};$("scrim").onclick=closeAll;
+document.addEventListener("keydown",function(e){if(e.key=="Escape")closeAll()});
+$("miAcc").onclick=function(){openSheet('<h3>Mi cuenta de Marie</h3><p><b>Marie</b> · Depilación descartable y pedicuría</p><p>WhatsApp: (11) 6324-3549</p><p>Mendoza y Berón de Astrada, San Justo</p><p>Lun a Vie 7 a 20 hs<br>Sáb, Dom y feriados 8 a 12 hs</p><p>Atención con turno previo.</p><a class="go" href="'+WA+'" target="_blank" rel="noopener">Escribir por WhatsApp</a>')};
+$("miHelp").onclick=function(){openSheet('<h3>Centro de ayuda</h3><p><b>¿Cómo pido un turno?</b><br>Elegí un servicio, el día y el horario y tocá Enviar por WhatsApp.</p><p><b>¿Queda confirmado al instante?</b><br>No. Marie te responde por WhatsApp para confirmarlo.</p><p><b>¿Cómo cancelo?</b><br>En Mis pedidos tocá Cancelar y avisale a Marie por WhatsApp.</p><p><b>¿Cómo se pagan las promos?</b><br>En efectivo.</p><a class="go" href="'+WA+'" target="_blank" rel="noopener">Hablar con Marie</a>')};
+$("miOut").onclick=function(){sel={};day=null;hr=null;$("name").value="";drawList();drawDays();drawHours();upd();view("home");toast("Cerraste sesión")};
+
+drawList();drawDays();drawHours();step(1);drawOrders();
+</script>
+</body>
+</html>
